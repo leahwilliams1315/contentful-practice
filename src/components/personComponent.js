@@ -1,21 +1,32 @@
-function Person({person}) {
+import {documentToReactComponents} from '@contentful/rich-text-react-renderer';
+import {BLOCKS, INLINES} from '@contentful/rich-text-types';
 
+
+const RICHTEXT_OPTIONS = {
+  renderNode: {
+    [BLOCKS.PARAGRAPH]: (node, children) => {
+      return <p className="mt-4 text-gray-500 dark:text-gray-400 lg:max-w-md">
+        {children}
+      </p>
+    },
+    [INLINES.HYPERLINK]: (node, children) => {
+      return  <a className="font-bold text-indigo-600 dark:text-indigo-400"
+                 href={node.data.uri}>{children} </a>
+    }
+  }
+}
+
+function Person({person: { name, socialLinkedin, socialGithub, image, bio }}) {
   return (
-    <section className="bg-white dark:bg-gray-800">
+    <section className="bg-white dark:bg-gray-800 mb-6 rounded-lg person-section">
       <div className="container px-6 py-8 mx-auto">
         <div className="items-center lg:flex">
           <div className="lg:w-1/2">
             <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Who I am</h2>
-
-            <p className="mt-4 text-gray-500 dark:text-gray-400 lg:max-w-md">
-              Hi I am {person.name}, software developer <a className="font-bold text-indigo-600 dark:text-indigo-400"
-                                                  href="#">@Rangle.io</a> , Lorem ipsum, dolor sit amet consectetur
-              adipisicing elit. Illum in sed non alias, fugiat, commodi nemo ut fugit corrupti dolorem sequi ex veniam
-              consequuntur id, maiores beatae ipsa omnis aliquam?
-            </p>
+            {documentToReactComponents(bio.json, RICHTEXT_OPTIONS)}
 
             <div className="flex items-center mt-6 -mx-2">
-              <a className="mx-2" href={person.socialLinkedin} target="_blank" aria-label="Linkden">
+              <a className="mx-2" href={socialLinkedin} target="_blank" aria-label="Linkden">
                 <svg
                   className="w-5 h-5 text-gray-700 fill-current dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400"
                   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -24,7 +35,7 @@ function Person({person}) {
                 </svg>
               </a>
 
-              <a className="mx-2" href={person.socialGithub} target="_blank" aria-label="Github">
+              <a className="mx-2" href={socialGithub} target="_blank" aria-label="Github">
                 <svg
                   className="w-5 h-5 text-gray-700 fill-current dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400"
                   xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -33,16 +44,15 @@ function Person({person}) {
                 </svg>
               </a>
             </div>
-
           </div>
 
           <div className="mt-8 lg:mt-0 lg:w-1/2">
             <div className="flex items-center justify-center lg:justify-end">
               <div className="max-w-lg">
                 <img
-                  className="object-cover object-center w-full h-64 rounded-md shadow"
-                  src="https://images.unsplash.com/photo-1484399172022-72a90b12e3c1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80"
-                  alt="">
+                  className="object-cover object-center rounded-full h-64 rounded-md shadow"
+                  src={image.url}
+                  alt={image.title}>
                 </img>
               </div>
             </div>

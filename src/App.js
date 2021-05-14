@@ -1,6 +1,7 @@
 import './App.css';
 import useContentful from "./hooks/use-contentful";
 import Person from "./components/personComponent";
+import Bookmark from "./components/bookmarkComponent";
 
 const query = `
 query {
@@ -8,6 +9,26 @@ query {
     name
     socialGithub
     socialLinkedin
+    bio {
+      json
+    }
+    image {
+      title
+      url
+    }
+  }
+  bookmarkCollection {
+    items {
+      title
+      url
+      comment
+      tagsCollection {
+        items {
+          title
+          colour
+        }
+      }
+    }
   }
 }
 `;
@@ -28,10 +49,14 @@ function App() {
     return <span>Loading...</span>
   }
 
+  const {person, bookmarkCollection} = data;
+
   return (
     <div className="App">
-      <Person person={data.person}/>
-      {/*{data.person.name}*/}
+      <Person person={person}/>
+      <div className="bookmark-container">
+        {bookmarkCollection.items.map(bookmark => <Bookmark bookmark={bookmark}/>)}
+      </div>
     </div>
   );
 }

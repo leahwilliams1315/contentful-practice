@@ -20,7 +20,7 @@ function useContentful (query){
           if(data) setData(data);
         }))
         .catch((error) => setErrors([errors]));
-    }, [query]
+    }, [query, errors]
     // without this dependency array, useEffect would run after each render, with it, only runs once, when component is injected in DOM
   );
   return {data, errors};
