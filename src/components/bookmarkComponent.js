@@ -16,7 +16,7 @@ function Bookmark({bookmark: {title, url, comment, tagsCollection}}){
         </p>
       </div>
       <div className="flex items-center justify-between mt-4">
-        <a href={url} className="text-blue-600 dark:text-blue-400 hover:underline">Visit</a>
+        <a href={url} target="_blank" className="text-blue-600 dark:text-blue-400 hover:underline">Visit</a>
       </div>
     </div>
   );
